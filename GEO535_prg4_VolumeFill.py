@@ -53,7 +53,7 @@ r = randRadius()
 ##Generates first circle
 
 x_value.append(circleGen(r))
-y_value.append(r+.001)
+y_value.append(r)
 r_value.append(r)
 #area = areaCheck(r_value)
 totalArea = .55
@@ -62,16 +62,15 @@ while totalArea >= 0:
     r = randRadius()
     x = circleGen(r)
     y = r
-    
-    for i in range(len(x_value)):
-        distance = distanceCheck(x, x_value[i], y, y_value[i], r, r_value[i])
-        if distance != True:
-            y = y_value[i] + math.sqrt((r+r_value[i])**2 - (x-x_value[i])**2)
-            for j in range(len(x_value)):
-                distance = distanceCheck(x, x_value[j], y, y_value[j], r, r_value[j])
-                if distance != True:
-                    y = y_value[j] + math.sqrt((r+r_value[j])**2 - (x-x_value[j])**2)
-    if y <= 1.0 - r and y >= r:
+    y_check = 0
+    while y_check != y:
+        y_check = y
+        for i in range(len(x_value)):
+            distance = distanceCheck(x, x_value[i], y, y_value[i], r, r_value[i])
+            if distance != True:
+                y = y_value[i] + math.sqrt((r+r_value[i])**2 - (x-x_value[i])**2)
+                
+    if y <= 1.0 - r:
         y_value.append(y)
         x_value.append(x)
         r_value.append(r)
@@ -88,6 +87,7 @@ print("Total Circles placed: " + str(iteration))
 fig, ax = plt.subplots()
 plt.xlim(0, 1)
 plt.ylim(0, 1)
+ax.set_aspect(1)
 for i in range(len(x_value)-1):
     circle1 = plt.Circle((x_value[i], y_value[i]), r_value[i], color=(np.random.uniform(0,1), np.random.uniform(0,1), np.random.uniform(0,1)), clip_on=False, fill=False)
     ax.add_artist(circle1)
